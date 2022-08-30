@@ -82,5 +82,18 @@ async def on_message(message):
       await message.add_reaction(emoji)
       await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
 
+# An event that responds with help-related info when a user asks ?help
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    # If message content = ?help then do something
+    if message.content == '?help':
+      print('someone asked for help!')
+
+      await message.reply(f"""Hello, {message.author.name}! sniffr_bot and its help system are current under construction. Current bot commands:
+      *!attaboy*  Get a response from sniffr_bot """)
+      
 # Runs app using Discord token
 client.run(os.environ['DISCORD_TOKEN'])
