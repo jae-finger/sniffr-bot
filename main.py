@@ -1,6 +1,7 @@
 import discord
 import os
 from dotenv import load_dotenv
+from discord.ext import commands
 import random
 
 load_dotenv() 
@@ -15,19 +16,29 @@ intents.message_content = True
 
 bot_testing_channel_id = 1013948378251542568
 
-client = discord.Client(intents=intents)
+# This example requires the 'members' and 'message_content' privileged intents to function.
 
-# Shows that bot is intialized
-@client.event
+bot = commands.Bot(command_prefix='?', description=description, intents=intents)
+bot.remove_command("help")
+
+@bot.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print('------')
 
-# A silly starter event that responds to users when they give the bot an attaboy
-@client.event
-async def on_message(message):
-    if message.author == client.user:
+# @bot.event
+# async def on_message(message):
+#    if message.content == 'hello bot':
+#       await message.reply("Yo!")
+     
+
+@bot.command(name='attaboy')
+async def _bot(message):
+  """sniffr_bot help command"""
+  if message.author == bot.user:
         return
 
+  else:
     dog_sounds = [
       'bark bark',
       'arf!',
@@ -41,59 +52,21 @@ async def on_message(message):
       'woooof',
       'BARK',
       'howl',
-      'awooooooo'
+      'awooooooo',
+      'bow-wow',
+      'woof-woof',
+      ''
     ]
+    response = random.choice(dog_sounds)
+    print(f'doing a {response} for a user :3')
+    await message.reply(response)
 
-    if message.content == '!attaboy':
-        response = random.choice(dog_sounds)
-        print(f'doing a {response} for a user :3')
-        await message.channel.send(response)
+@bot.command(name='help')
+async def _bot(ctx):
+    """sniffr_bot help command"""
+    await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
+    *?attaboy*       Call sniffr_bot over for an 'atta boy!'""")
 
-# An event that responds to a user when they post a green square opportunity
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    # If message contains 'green square opportunity' & 'github link' then respond with something positive
-    if ('green' in message.content) and ('square' in message.content) and ('opportunity' in message.content) and ('/github.com/' in message.content):
-      print('someone posted a green square opportunity!')
-      emoji = '🦾'
-
-      exclamations = [
-        'Holy smoke!',
-        'Holy smokes!',
-        'Wow!',
-        'Woweeee!',
-        'Way to go!',
-        'Whoooooo!',
-        'Hooray!',
-        'Hooya!',
-        'Huzzah!',
-        'Yes!',
-        '!!!!!!!!!!!!!',
-        'Well lookie here!',
-        'Awww!',
-        'Brilliant!',
-        'Excellent!',
-        'Awesome!',
-        'Nani!?'
-      ]
-      await message.add_reaction(emoji)
-      await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
-
-# An event that responds with help-related info when a user asks ?help
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    # If message content = ?help then do something
-    if message.content == '?help':
-      print('someone asked for help!')
-
-      await message.reply(f"""Hello, {message.author.name}! sniffr_bot and its help system are current under construction. Current bot commands:
-      *!attaboy*  Get a response from sniffr_bot """)
       
 # Runs app using Discord token
-client.run(os.environ['DISCORD_TOKEN'])
+bot.run(os.environ['DISCORD_TOKEN'])
