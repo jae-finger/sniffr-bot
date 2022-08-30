@@ -26,17 +26,18 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
+    dog_sounds = [
+        'bark bark',
+        'arf!',
+        'woof!',
+        'grrrrr'
+        'bark',
+        'wooooooooooof'
     ]
 
-    if message.content == '99!':
-        response = random.choice(brooklyn_99_quotes)
+    if message.content == '!attaboy':
+        response = random.choice(dog_sounds)
+        print(f'doing a {response} for a user :3')
         await message.channel.send(response)
 
 client.run(os.getenv('DISCORD_TOKEN'))
