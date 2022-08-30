@@ -49,5 +49,37 @@ async def on_message(message):
         print(f'doing a {response} for a user :3')
         await message.channel.send(response)
 
-# Runs ap using Discord token
+# An event that responds to a user when they post a green square opportunity
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    # If message contains 'green square opportunity' & 'github link' then respond with something positive
+    if ('green' in message.content) and ('square' in message.content) and ('opportunity' in message.content) and ('/github.com/' in message.content):
+      print('someone posted a green square opportunity!')
+      emoji = '🦾'
+
+      exclaimations = [
+        'Holy smoke!',
+        'Holy smokes!',
+        'Wow!',
+        'Woweeee!',
+        'Way to go!',
+        'Whoooooo!',
+        'Hooray!',
+        'Hooya!',
+        'Huzzah!',
+        'Yes!',
+        '!!!!!!!!!!!!!',
+        'Well lookie here!',
+        'Awww!',
+        'Brilliant!',
+        'Excellent!',
+        'Awesome!'
+      ]
+      await message.add_reaction(emoji)
+      await message.reply(random.choice(exclaimations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
+
+# Runs app using Discord token
 client.run(os.environ['DISCORD_TOKEN'])
