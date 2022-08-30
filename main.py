@@ -30,14 +30,15 @@ async def on_message(message):
         'bark bark',
         'arf!',
         'woof!',
-        'grrrrr'
+        'grrrrr',
         'bark',
         'wooooooooooof'
     ]
+
 
     if message.content == '!attaboy':
         response = random.choice(dog_sounds)
         print(f'doing a {response} for a user :3')
         await message.channel.send(response)
 
-client.run(os.getenv('DISCORD_TOKEN'))
+client.run(os.environ['DISCORD_TOKEN'])
