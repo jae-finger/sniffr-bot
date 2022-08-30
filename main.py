@@ -60,7 +60,7 @@ async def on_message(message):
       print('someone posted a green square opportunity!')
       emoji = '🦾'
 
-      exclaimations = [
+      exclamations = [
         'Holy smoke!',
         'Holy smokes!',
         'Wow!',
@@ -76,10 +76,11 @@ async def on_message(message):
         'Awww!',
         'Brilliant!',
         'Excellent!',
-        'Awesome!'
+        'Awesome!',
+        'Nani!?'
       ]
       await message.add_reaction(emoji)
-      await message.reply(random.choice(exclaimations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
+      await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
 
 # Runs app using Discord token
 client.run(os.environ['DISCORD_TOKEN'])
