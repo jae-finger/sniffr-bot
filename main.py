@@ -67,7 +67,8 @@ async def green_square_bot(message):
     if message.author == bot.user:
         return
     # If message contains 'green square opportunity' & 'github link' then respond with something positive
-    if ('green' in message.content) and ('square' in message.content) and ('github.com/the-best-team-seven/sniffr' in message.content):
+    message_content = message.content.lower()
+    if ('green' in message_content) and ('square' in message_content) and ('github.com/the-best-team-seven/sniffr' in message_content):
       print(f'{message.author.name} posted a green square opportunity!')
       emoji = '🦾'
 
