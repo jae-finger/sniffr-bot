@@ -26,16 +26,17 @@ async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
 
-# @bot.event
-# async def on_message(message):
-#    if message.content == 'hello bot':
-#       await message.reply("Yo!")
-     
-
-@bot.command(name='attaboy')
-async def _bot(message):
+@bot.command()
+async def help(ctx):
   """sniffr_bot help command"""
-  if message.author == bot.user:
+  print(f"Helping out {ctx.author.name}")
+  await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
+  *?attaboy*       Call sniffr_bot over for an 'atta boy!'""")
+
+@bot.command()
+async def attaboy(ctx):
+  """sniffr_bot help command"""
+  if ctx.author == bot.user:
         return
 
   else:
@@ -59,14 +60,39 @@ async def _bot(message):
     ]
     response = random.choice(dog_sounds)
     print(f'doing a {response} for a user :3')
-    await message.reply(response)
+    await ctx.reply(response)
+  
+@bot.listen('on_message')
+async def green_square_bot(message):
+    if message.author == bot.user:
+        return
+    # If message contains 'green square opportunity' & 'github link' then respond with something positive
+    if ('green' in message.content) and ('square' in message.content) and ('github.com/the-best-team-seven/sniffr' in message.content):
+      print(f'{message.author.name} posted a green square opportunity!')
+      emoji = '🦾'
 
-@bot.command(name='help')
-async def _bot(ctx):
-    """sniffr_bot help command"""
-    await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
-    *?attaboy*       Call sniffr_bot over for an 'atta boy!'""")
-
+      exclamations = [
+        'Holy smoke!',
+        'Holy smokes!',
+        'Wow!',
+        'Woweeee!',
+        'Way to go!',
+        'Whoooooo!',
+        'Hooray!',
+        'Hooya!',
+        'Huzzah!',
+        'Yes!',
+        '!!!!!!!!!!!!!',
+        'Well lookie here!',
+        'Awww!',
+        'Brilliant!',
+        'Excellent!',
+        'Awesome!',
+        'Nani!?'
+      ]
+      
+      await message.add_reaction(emoji)
+      await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
       
 # Runs app using Discord token
 bot.run(os.environ['DISCORD_TOKEN'])
