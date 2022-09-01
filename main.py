@@ -31,7 +31,9 @@ async def help(ctx):
   """sniffr_bot help command"""
   print(f"Helping out {ctx.author.name}")
   await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
-  *?attaboy*       Call sniffr_bot over for an 'atta boy!'""")
+  *?attaboy*        Call sniffr_bot over for an 'atta boy!'
+  *?server_urls*    Returns the web addresses for front and back end production servers
+  """)
 
 @bot.command()
 async def attaboy(ctx):
@@ -61,6 +63,18 @@ async def attaboy(ctx):
     response = random.choice(dog_sounds)
     print(f'doing a {response} for a user :3')
     await ctx.reply(response)
+
+@bot.command()
+async def server_urls(ctx):
+  """sniffr_bot help command"""
+  if ctx.author == bot.user:
+        return
+  response = """**front end:** https://team-sniffr.netlify.app/  
+**back end:** http://sniffr-be.herokuapp.com/
+  """
+  
+  print(f'{ctx.author} asked for the fe/be servers')
+  await ctx.reply(response)
   
 @bot.listen('on_message')
 async def green_square_bot(message):
