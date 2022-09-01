@@ -91,9 +91,8 @@ async def green_square_bot(message):
         'Awesome!',
         'Nani!?'
       ]
-      
       await message.add_reaction(emoji)
-      await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, @{message.author.name}!")
+      await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, {message.author.name}!")
       
 # Runs app using Discord token
 bot.run(os.environ['DISCORD_TOKEN'])
