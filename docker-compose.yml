@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  discord_chatbot:
+    container_name: sniffr_bot
+    build: .
+    command: >
+      python main.py
+    environment:
+      PYTHONUNBUFFERED: 'true'
+    volumes:
+      - '.:/sniffr_bot'
