@@ -172,7 +172,7 @@ tuesday_meeting_time = datetime.time(hour=18, minute=0, second=0)
 async def eta5_minutes():
   # Check that today is tuesday or saturday 
   channel = bot.get_channel(bot_testing_channel_id)
-  await channel.send("ETA 5 minutes until a sniffr meeting, yo!")
+  await channel.send("""Hey @everyone - there's a sniffr meeting in 5 minutes! Keep an eye out for the zoom link 👀""")
   print("Reminding people that there is a meeting soon")
 
 
@@ -189,12 +189,15 @@ async def everyone_test(ctx):
   """sniffr_bot help command"""
   if ctx.author == bot.user:
         return
-  response = """Hey @everyone - there's a sniffr meeting in 5 minutes!  
-  Keep an eye out for the zoom link 👀
-  """
 
-  print(f'reminding everyone')
-  await ctx.reply(response)
+  today_is = datetime.date.today().strftime("%A")
+  if today_is in ['Tuesday', 'Saturday']:
+    response = """Hey everyone - there's a sniffr meeting in 5 minutes! Keep an eye out for the zoom link 👀"""
+
+    print(f'reminding everyone')
+    await ctx.reply(response)
+  else:
+    ...
 
 
 # Runs app using Discord token
