@@ -24,7 +24,7 @@ intents.message_content = True
 
 bot_testing_channel_id = 1013948378251542568
 
-bot = commands.Bot(command_prefix='?', description=description, intents=intents)
+bot = commands.Bot(command_prefix='?', description=description, intents=intents, allowed_mentions = discord.AllowedMentions(everyone = True))
 bot.remove_command("help")
 
 ## Keep track of both backend and frontend pull requests
@@ -170,9 +170,10 @@ tuesday_meeting_time = datetime.time(hour=18, minute=0, second=0)
 # Create tuesday eta 5 meeting task
 @tasks.loop(time=tuesday_meeting_time_eta5)
 async def eta5_minutes():
-    channel = bot.get_channel(bot_testing_channel_id)
-    await channel.send("ETA 5 minutes until a sniffr meeting, yo!")
-    print("Reminding people that there is a meeting soon")
+  # Check that today is tuesday or saturday 
+  channel = bot.get_channel(bot_testing_channel_id)
+  await channel.send("ETA 5 minutes until a sniffr meeting, yo!")
+  print("Reminding people that there is a meeting soon")
 
 
 @bot.event
@@ -181,5 +182,20 @@ async def on_ready():
         eta5_minutes.start() #If the task is not already running, start it.
         print("ETA 5 mins till meeting task started")
       
+# @everyone test
+# Server URLs command
+@bot.command()
+async def everyone_test(ctx):
+  """sniffr_bot help command"""
+  if ctx.author == bot.user:
+        return
+  response = """Hey @everyone - there's a sniffr meeting in 5 minutes!  
+  Keep an eye out for the zoom link 👀
+  """
+
+  print(f'reminding everyone')
+  await ctx.reply(response)
+
+
 # Runs app using Discord token
 bot.run(os.environ['DISCORD_TOKEN'])
