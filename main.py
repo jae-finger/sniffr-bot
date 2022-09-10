@@ -7,6 +7,7 @@ import spacy
 from spacy.matcher import Matcher
 import re
 import datetime
+import requests
 
 # Load env variables
 load_dotenv() 
@@ -58,21 +59,28 @@ exclamations = [
   '🤯'
 ]
 
-## Bot commands
 # Login event
 @bot.event
 async def on_ready():
-    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print(f'Logged in as {bot.user} (ID: {bot.user.id}) at {datetime.datetime.now()} ')
     print('------')
 
+    # if not meeting_time_message.is_running():
+    #     meeting_time_message.start() #If the task is not already running, start it.
+    #     print("meeting_time_message task started")
+
+#################################################################################
+## Bot commands
+
 # Help command
-@bot.command()
-async def help(ctx):
+@bot.command(name='help')
+async def Help_Command(ctx):
   """sniffr_bot help command"""
   print(f"Helping out {ctx.author.name}")
   await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
   *?attaboy*        Call sniffr_bot over for an 'atta boy!'
-  *?server_urls*    Returns the web addresses for front and back end production servers
+  *?server_urls*   Returns the web addresses for front and back end production servers
+  *?dogpic*         Get a random dog picture
   """)
 
 # Attaboy command
@@ -117,6 +125,28 @@ async def server_urls(ctx):
   print(f'{ctx.author} asked for the fe/be servers')
   await ctx.reply(response)
   
+# Dog pic command
+@bot.command(name='dogpic', aliases=['dogimg'])
+async def DogPic(ctx):
+  '''Get a dog picture from a api randomly'''
+  response = requests.get("https://dog.ceo/api/breeds/image/random")
+  image_link = response.json()["message"]
+  print(f"Sending {ctx.author} an image ({image_link})")
+  await ctx.send(image_link)
+
+# # Create meeting time task
+# @tasks.loop(minutes=2)
+# async def meeting_time_message():
+#   # Check that today is tuesday or saturday 
+#   today_is = datetime.date.today().strftime("%A")
+#   if today_is in ['Thursday', 'Saturday']:
+#     channel = bot.get_channel(bot_testing_channel_id)
+#     await channel.send("""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕""")
+#     print("Reminding people that there is a meeting soon")
+#   else:
+#     ...
+
+## Bot Events
 # Green square opportunity event
 @bot.listen('on_message')
 async def green_square_bot(message):
@@ -163,42 +193,6 @@ async def green_square_bot(message):
     else:
       ...
 
-# Create tuesday eta5 meeting time and actual meeting time (5pm central)
-tuesday_meeting_time_eta5 = datetime.time(hour=17, minute=55, second=0)
-tuesday_meeting_time = datetime.time(hour=18, minute=0, second=0)
-
-# Create tuesday eta 5 meeting task
-@tasks.loop(time=tuesday_meeting_time_eta5)
-async def eta5_minutes():
-  # Check that today is tuesday or saturday 
-  channel = bot.get_channel(bot_testing_channel_id)
-  await channel.send("""Hey @everyone - there's a sniffr meeting in 5 minutes! Keep an eye out for the zoom link 👀""")
-  print("Reminding people that there is a meeting soon")
-
-
-@bot.event
-async def on_ready():
-    if not eta5_minutes.is_running():
-        eta5_minutes.start() #If the task is not already running, start it.
-        print("ETA 5 mins till meeting task started")
-      
-# @everyone test
-# Server URLs command
-@bot.command()
-async def everyone_test(ctx):
-  """sniffr_bot help command"""
-  if ctx.author == bot.user:
-        return
-
-  today_is = datetime.date.today().strftime("%A")
-  if today_is in ['Tuesday', 'Saturday']:
-    response = """Hey everyone - there's a sniffr meeting in 5 minutes! Keep an eye out for the zoom link 👀"""
-
-    print(f'reminding everyone')
-    await ctx.reply(response)
-  else:
-    ...
-
-
-# Runs app using Discord token
-bot.run(os.environ['DISCORD_TOKEN'])
+if __name__ == '__main__':
+  # Runs app using Discord token
+  bot.run(os.environ['DISCORD_TOKEN'])
