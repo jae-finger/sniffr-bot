@@ -179,15 +179,6 @@ async def eta5_message_message(ctx):
       print("Reminding people that there is a meeting soon~~")
       await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
 
-# ?sched_zoom_msg eta5 05 55 0 meet 06 00 00
-@bot.command(name="sched_zoom_msg")
-async def zoom_meetings(ctx, str1:str, hour1:int, minute1:int, second1:int, str2:str, hour2:int, minute2:int, second2:int):
-  # print (str1, hour1, minute1, second1, str2, hour2, minute2, second2)
-  time1 = datetime.time(hour1, minute1, second1)
-  time2 = datetime.time(hour2, minute2, second2)
-  time1str = time1.strftime("%I:%M:%S %p")
-  await ctx.send(f"A daily message will be sent at {time1str} \nDaily message: \"{time1str}\"\n ")
-
 ## Bot Events
 # Green square opportunity event
 @bot.listen('on_message')
