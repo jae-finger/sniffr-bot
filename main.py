@@ -1,11 +1,14 @@
 import discord
 import os
 from dotenv import load_dotenv
-from discord.ext import commands
+from discord.ext import commands, tasks
 import random
 import spacy
 from spacy.matcher import Matcher
 import re
+import datetime
+import requests
+import asyncio
 
 # Load env variables
 load_dotenv() 
@@ -22,8 +25,9 @@ intents.members = True
 intents.message_content = True
 
 bot_testing_channel_id = 1013948378251542568
+sniffr_main_channel_id = 1013694573651959808
 
-bot = commands.Bot(command_prefix='?', description=description, intents=intents)
+bot = commands.Bot(command_prefix='?', description=description, intents=intents, allowed_mentions = discord.AllowedMentions(everyone = True))
 bot.remove_command("help")
 
 ## Keep track of both backend and frontend pull requests
@@ -57,21 +61,28 @@ exclamations = [
   '🤯'
 ]
 
-## Bot commands
 # Login event
 @bot.event
 async def on_ready():
-    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print(f'Logged in as {bot.user} (ID: {bot.user.id}) at {datetime.datetime.now()} ')
     print('------')
 
+    # if not meeting_time_message.is_running():
+    #     meeting_time_message.start() #If the task is not already running, start it.
+    #     print("meeting_time_message task started")
+
+#################################################################################
+## Bot commands
+
 # Help command
-@bot.command()
-async def help(ctx):
+@bot.command(name='help')
+async def Help_Command(ctx):
   """sniffr_bot help command"""
   print(f"Helping out {ctx.author.name}")
   await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
   *?attaboy*        Call sniffr_bot over for an 'atta boy!'
-  *?server_urls*    Returns the web addresses for front and back end production servers
+  *?server_urls*   Returns the web addresses for front and back end production servers
+  *?dogpic*         Get a random dog picture
   """)
 
 # Attaboy command
@@ -116,6 +127,68 @@ async def server_urls(ctx):
   print(f'{ctx.author} asked for the fe/be servers')
   await ctx.reply(response)
   
+# Dog pic command
+@bot.command(name='dogpic', aliases=['dogimg'])
+async def DogPic(ctx):
+  '''Get a dog picture from a api randomly'''
+  response = requests.get("https://dog.ceo/api/breeds/image/random")
+  image_link = response.json()["message"]
+  print(f"Sending {ctx.author} an image ({image_link})")
+  await ctx.send(image_link)
+
+
+@bot.command(name='meetingmsg')
+async def schedule_meeting_message(ctx):
+  while True:
+    now = datetime.datetime.now()
+    today = datetime.date.today()
+    print(now.today().weekday())
+
+    #monday = 0, sunday = 6
+    if today.weekday() in [5, 6, 0, 1, 2, 3]:
+      wednesday = now + datetime.timedelta( (2-today.weekday()) % 7 )
+      wednesday = wednesday.replace(hour=18, minute=0, second=0, microsecond=0)
+    
+      wait_time = (wednesday - now).total_seconds()
+      print(wednesday)
+      print(wait_time)
+      # Send message
+      await asyncio.sleep(wait_time)
+      channel = bot.get_channel(bot_testing_channel_id)
+      print("Reminding people that there is a meeting now!")
+      await channel.send("""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕""")
+
+@bot.command(name='eta5meetingmsg')
+async def eta5_message_message(ctx):
+  while True:
+    now = datetime.datetime.now()
+    today = datetime.date.today()
+    print(now.today().weekday())
+
+    #monday = 0, sunday = 6
+    if today.weekday() in [5, 6, 0, 1, 2, 3]:
+      wednesday = now + datetime.timedelta( (2-today.weekday()) % 7 )
+      wednesday = wednesday.replace(hour=17, minute=55, second=0, microsecond=0)
+    
+      wait_time = (wednesday - now).total_seconds()
+      print(wednesday)
+      print(wait_time)
+      # Send message
+      await asyncio.sleep(wait_time)
+      channel = bot.get_channel(bot_testing_channel_id)
+      print("Reminding people that there is a meeting soon~~")
+      await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
+
+# ?sched_zoom_msg eta5 05 55 0 meet 06 00 00
+@bot.command(name="sched_zoom_msg")
+async def zoom_meetings(ctx, str1:str, hour1:int, minute1:int, second1:int, str2:str, hour2:int, minute2:int, second2:int):
+  # print (str1, hour1, minute1, second1, str2, hour2, minute2, second2)
+  time1 = datetime.time(hour1, minute1, second1)
+  time2 = datetime.time(hour2, minute2, second2)
+  time1str = time1.strftime("%I:%M:%S %p")
+  await ctx.send(f"A daily message will be sent at {time1str} \nDaily message: \"{time1str}\"\n ")
+
+## Bot Events
 # Green square opportunity event
 @bot.listen('on_message')
 async def green_square_bot(message):
@@ -161,6 +234,7 @@ async def green_square_bot(message):
             await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, {message.author.name}!")
     else:
       ...
-      
-# Runs app using Discord token
-bot.run(os.environ['DISCORD_TOKEN'])
+
+if __name__ == '__main__':
+  # Runs app using Discord token
+  bot.run(os.environ['DISCORD_TOKEN'])
