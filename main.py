@@ -174,7 +174,9 @@ async def download_envs(ctx, repo = ''):
 
   # if requesting fe
   if (repo == 'fe') or (repo == 'frontend') or (repo == 'front end'):
-    await ctx.author.send('FE')
+    await ctx.author.send('''
+    `FE`
+    ''')
   
   # elif reqesting be
   elif (repo == 'be') or (repo == 'backend') or (repo == 'backend'):
@@ -183,7 +185,7 @@ async def download_envs(ctx, repo = ''):
   # return nothing if else
   else:
     ...
-    
+
 ## Bot Events
 @bot.listen('on_message')
 async def green_square_bot(message):
