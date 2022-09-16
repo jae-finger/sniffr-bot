@@ -141,7 +141,7 @@ async def DogPic(ctx):
 async def schedule_meeting_message(ctx, meetinglink = ''):
     today = datetime.date.today()
     # monday = 0, sunday = 6
-    if today.weekday() in [4, 5]:
+    if today.weekday() in [2, 5]:
       channel = bot.get_channel(bot_testing_channel_id)
       print("Reminding people that there is a meeting now!")
       await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
@@ -151,7 +151,7 @@ async def schedule_meeting_message(ctx, meetinglink = ''):
 async def eta5_message_message(ctx):
   today = datetime.date.today()
   # monday = 0, sunday = 6
-  if today.weekday() in [4, 5]:
+  if today.weekday() in [2, 5]:
     channel = bot.get_channel(bot_testing_channel_id)
     print("Reminding people that there is a meeting soon~~")
     await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
