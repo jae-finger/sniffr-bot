@@ -137,47 +137,18 @@ async def DogPic(ctx):
   await ctx.send(image_link)
 
 
-# @bot.command(name='meetingmsg')
-# async def schedule_meeting_message(ctx):
-#   while True:
-#     now = datetime.datetime.now()
-#     today = datetime.date.today()
-#     print(now.today().weekday())
+@bot.command(name='meetingmsg')
+async def schedule_meeting_message(ctx, meetinglink = ''):
+  channel = bot.get_channel(bot_testing_channel_id)
+  print("Reminding people that there is a meeting now!")
+  await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
+  Zoom link: {meetinglink}""")
 
-#     #monday = 0, sunday = 6
-#     if today.weekday() in [5, 6, 0, 1, 2, 3]:
-#       wednesday = now + datetime.timedelta( (2-today.weekday()) % 7 )
-#       wednesday = wednesday.replace(hour=18, minute=0, second=0, microsecond=0)
-    
-#       wait_time = (wednesday - now).total_seconds()
-#       print(wednesday)
-#       print(wait_time)
-#       # Send message
-#       await asyncio.sleep(wait_time)
-#       channel = bot.get_channel(bot_testing_channel_id)
-#       print("Reminding people that there is a meeting now!")
-#       await channel.send("""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕""")
-
-# @bot.command(name='eta5meetingmsg')
-# async def eta5_message_message(ctx):
-#   while True:
-#     now = datetime.datetime.now()
-#     today = datetime.date.today()
-#     print(now.today().weekday())
-
-#     #monday = 0, sunday = 6
-#     if today.weekday() in [5, 6, 0, 1, 2, 3]:
-#       wednesday = now + datetime.timedelta( (2-today.weekday()) % 7 )
-#       wednesday = wednesday.replace(hour=17, minute=55, second=0, microsecond=0)
-    
-#       wait_time = (wednesday - now).total_seconds()
-#       print(wednesday)
-#       print(wait_time)
-#       # Send message
-#       await asyncio.sleep(wait_time)
-#       channel = bot.get_channel(bot_testing_channel_id)
-#       print("Reminding people that there is a meeting soon~~")
-#       await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
+@bot.command(name='eta5meetingmsg')
+async def eta5_message_message(ctx):
+  channel = bot.get_channel(bot_testing_channel_id)
+  print("Reminding people that there is a meeting soon~~")
+  await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
 
 ## Bot Events
 # Green square opportunity event
