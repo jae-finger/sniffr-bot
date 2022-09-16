@@ -139,16 +139,22 @@ async def DogPic(ctx):
 
 @bot.command(name='meetingmsg')
 async def schedule_meeting_message(ctx, meetinglink = ''):
-  channel = bot.get_channel(bot_testing_channel_id)
-  print("Reminding people that there is a meeting now!")
-  await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
-  Zoom link: {meetinglink}""")
+    today = datetime.date.today()
+    # monday = 0, sunday = 6
+    if today.weekday() in [4, 5]:
+      channel = bot.get_channel(bot_testing_channel_id)
+      print("Reminding people that there is a meeting now!")
+      await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
+      Zoom link: {meetinglink}""")
 
 @bot.command(name='eta5meetingmsg')
 async def eta5_message_message(ctx):
-  channel = bot.get_channel(bot_testing_channel_id)
-  print("Reminding people that there is a meeting soon~~")
-  await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
+  today = datetime.date.today()
+  # monday = 0, sunday = 6
+  if today.weekday() in [4, 5]:
+    channel = bot.get_channel(bot_testing_channel_id)
+    print("Reminding people that there is a meeting soon~~")
+    await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
 
 ## Bot Events
 # Green square opportunity event
