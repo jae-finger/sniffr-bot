@@ -180,7 +180,10 @@ async def download_envs(ctx, repo = ''):
   
   # elif reqesting be
   elif (repo == 'be') or (repo == 'backend') or (repo == 'backend'):
-    await ctx.author.send('BE')
+    be_env = os.environ['BE_ENV']
+    await ctx.author.send(f'''
+    `{be_env}`
+    ''')
 
   # return nothing if else
   else:
