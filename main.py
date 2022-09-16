@@ -131,33 +131,60 @@ async def server_urls(ctx):
 @bot.command(name='dogpic', aliases=['dogimg'])
 async def DogPic(ctx):
   '''Get a dog picture from a api randomly'''
+  if ctx.author == bot.user:
+      return
   response = requests.get("https://dog.ceo/api/breeds/image/random")
   image_link = response.json()["message"]
   print(f"Sending {ctx.author} an image ({image_link})")
   await ctx.send(image_link)
 
-
+# Meeting Messages (meetingmsg eta5meetingmsg)
 @bot.command(name='meetingmsg')
 async def schedule_meeting_message(ctx, meetinglink = ''):
-    today = datetime.date.today()
-    # monday = 0, sunday = 6
-    if today.weekday() in [2, 5]:
-      channel = bot.get_channel(bot_testing_channel_id)
-      print("Reminding people that there is a meeting now!")
-      await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
-      Zoom link: {meetinglink}""")
+  if ctx.author == bot.user:
+      return
 
-@bot.command(name='eta5meetingmsg')
-async def eta5_message_message(ctx):
   today = datetime.date.today()
   # monday = 0, sunday = 6
   if today.weekday() in [2, 5]:
-    channel = bot.get_channel(bot_testing_channel_id)
+    channel = bot.get_channel(sniffr_main_channel_id)
+    print("Reminding people that there is a meeting now!")
+    await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
+    Zoom link: {meetinglink}""")
+
+@bot.command(name='eta5meetingmsg')
+async def eta5_message_message(ctx):
+  if ctx.author == bot.user:
+      return
+  today = datetime.date.today()
+  # monday = 0, sunday = 6
+  if today.weekday() in [2, 5]:
+    channel = bot.get_channel(sniffr_main_channel_id)
     print("Reminding people that there is a meeting soon~~")
     await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
 
+# Fetch env s
+@bot.command(name='fetch_env')
+async def download_envs(ctx, repo = ''):
+  if ctx.author == bot.user:
+      ...
+
+  # fix repo name
+  repo = repo.lower()
+
+  # if requesting fe
+  if (repo == 'fe') or (repo == 'frontend') or (repo == 'front end'):
+    await ctx.author.send('FE')
+  
+  # elif reqesting be
+  elif (repo == 'be') or (repo == 'backend') or (repo == 'backend'):
+    await ctx.author.send('BE')
+
+  # return nothing if else
+  else:
+    ...
+    
 ## Bot Events
-# Green square opportunity event
 @bot.listen('on_message')
 async def green_square_bot(message):
     if message.author == bot.user:
@@ -174,6 +201,7 @@ async def green_square_bot(message):
       doc = nlp(message_content)
 
       for token in doc:
+        # if github fe in pull request found
         if '/sniffr-fe/pull/' in token.text:
           pattern = r"[0-9]+"
           matches = re.findall(pattern, token.text)
@@ -187,7 +215,7 @@ async def green_square_bot(message):
             await message.add_reaction(mech_arm_emoji)
             await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, {message.author.name}!")
 
-        # Back end
+        # if github be in pull request found
         elif '/sniffr-be/pull/' in token.text:
           pattern = r"[0-9]+"
           matches = re.findall(pattern, token.text)
