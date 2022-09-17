@@ -80,9 +80,10 @@ async def Help_Command(ctx):
   """sniffr_bot help command"""
   print(f"Helping out {ctx.author.name}")
   await ctx.reply(f"""Hello, {ctx.author.name}! sniffr_bot and its help system are currently under construction. Current working commands are:
-  *?attaboy*        Call sniffr_bot over for an 'atta boy!'
-  *?server_urls*   Returns the web addresses for front and back end production servers
-  *?dogpic*          Get a random dog picture
+  *?attaboy*             Call sniffr_bot over for an 'atta boy!'  
+  *?server_urls*         Returns the web addresses for front and back end production servers  
+  *?dogpic*              Get a random dog picture  
+  *?fetch env [be|fe]()  Get the .env for that server messaged to you
   """)
 
 # Attaboy command
@@ -120,7 +121,9 @@ async def server_urls(ctx):
   """sniffr_bot help command"""
   if ctx.author == bot.user:
         return
-  response = """**front end:** https://team-sniffr.netlify.app/  
+  response = """
+**front end:** https://team-sniffr.netlify.app/    
+
 **back end:** http://sniffr-be.herokuapp.com/
   """
   
