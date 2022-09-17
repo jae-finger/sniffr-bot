@@ -179,6 +179,7 @@ async def download_envs(ctx, repo = ''):
   if (repo == 'fe') or (repo == 'frontend') or (repo == 'front end'):
     fe_env = os.environ['FE_ENV']
     await ctx.author.send(f'''
+    Here is the .env file for the front end:
     `{fe_env}`
     ''')
   
@@ -186,6 +187,7 @@ async def download_envs(ctx, repo = ''):
   elif (repo == 'be') or (repo == 'backend') or (repo == 'backend'):
     be_env = os.environ['BE_ENV']
     await ctx.author.send(f'''
+    Here's the backend .env!
     `{be_env}`
     ''')
 
