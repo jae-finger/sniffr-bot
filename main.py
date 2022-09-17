@@ -83,7 +83,7 @@ async def Help_Command(ctx):
   *?attaboy*             Call sniffr_bot over for an 'atta boy!'  
   *?server_urls*         Returns the web addresses for front and back end production servers  
   *?dogpic*              Get a random dog picture  
-  *?fetch env be|fe*  Get the .env for that server messaged to you
+  *?fetch_env be|fe*  Get the .env for that server messaged to you
   """)
 
 # Attaboy command
