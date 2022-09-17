@@ -154,6 +154,8 @@ async def schedule_meeting_message(ctx, meetinglink = ''):
     print("Reminding people that there is a meeting now!")
     await channel.send(f"""🐶sniffr team... ASSEMBLE! It's meeting time🐩 (@everyone)🐕  
     Zoom link: {meetinglink}""")
+  else:
+    ...
 
 @bot.command(name='eta5meetingmsg')
 async def eta5_message_message(ctx):
@@ -165,6 +167,8 @@ async def eta5_message_message(ctx):
     channel = bot.get_channel(sniffr_main_channel_id)
     print("Reminding people that there is a meeting soon~~")
     await channel.send("""Who's ready for some sniffr action? There's a meeting coming in 5 minutes, @everyone!""")
+  else:
+    ...
 
 # Fetch env s
 @bot.command(name='fetch_env')
