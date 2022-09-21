@@ -66,10 +66,9 @@ exclamations = [
 async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id}) at {datetime.datetime.now()} ')
     print('------')
-
-    # if not meeting_time_message.is_running():
-    #     meeting_time_message.start() #If the task is not already running, start it.
-    #     print("meeting_time_message task started")
+    if not trophy_announcer.is_running():
+        trophy_announcer.start() #If the task is not already running, start it.
+        print("trophy_announcer task started")
 
 #################################################################################
 ## Bot commands
@@ -170,7 +169,7 @@ async def eta5_message_message(ctx):
   else:
     ...
 
-# Fetch env s
+# Fetch envs
 @bot.command(name='fetch_env')
 async def download_envs(ctx, repo = ''):
   if ctx.author == bot.user:
@@ -245,6 +244,32 @@ async def green_square_bot(message):
             await message.reply(random.choice(exclamations) + f" Thanks for sharing this green square opportunity, {message.author.name}!")
     else:
       ...
+
+
+# Trophy event
+trophy_date = datetime.date(year=2022, month=9, day=20)
+trophy_date = datetime.date.today()
+trophy_leaderboard = """
+  **📢 sniffr Trophy Leaderboard 📢 @here**  
+  Allie: 🥚  
+  Benedict: 👻  
+  Dan: ❓  
+  Jon: 😭  
+  Josh: 🤞
+  """
+
+@tasks.loop(hours=random.randint(36, 72))
+async def trophy_announcer():
+  today = datetime.date.today()
+  global trophy_date
+  if today > trophy_date:
+    channel = bot.get_channel(sniffr_main_channel_id)
+    trophy_date = today
+    print("**Trophy counts being sent**")
+    await channel.send(trophy_leaderboard)
+  else:
+    ...
+
 
 if __name__ == '__main__':
   # Runs app using Discord token
