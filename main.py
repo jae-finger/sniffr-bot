@@ -247,7 +247,6 @@ async def green_square_bot(message):
 
 
 # Trophy event
-trophy_date = datetime.date(year=2022, month=9, day=20)
 trophy_date = datetime.date.today()
 trophy_leaderboard = """
   **📢 sniffr Trophy Leaderboard 📢 @here**  
