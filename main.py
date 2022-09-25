@@ -222,8 +222,8 @@ async def green_square_bot(message):
           pull_id = int(matches[0])
 
           # if this pull is new, then respond
-          if pull_id > backend_pull_id:
-            backend_pull_id = pull_id
+          if pull_id > frontend_pull_id:
+            frontend_pull_id = pull_id
             print(f'{message.author.name} posted a green square opportunity!')
 
             await message.add_reaction(mech_arm_emoji)
@@ -251,10 +251,15 @@ trophy_date = datetime.date.today()
 trophy_leaderboard = """
   **📢 sniffr Trophy Leaderboard 📢 @here**  
   Allie: 🥚  
+
   Benedict: 👻  
+
   Dan: ❓  
+
   Jon: 😭  
+
   Josh: 🤞
+
   """
 
 @tasks.loop(hours=random.randint(36, 72))
