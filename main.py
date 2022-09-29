@@ -249,14 +249,17 @@ async def green_square_bot(message):
 # Trophy event
 trophy_date = datetime.date.today()
 trophy_leaderboard = """
-  **📢 sniffr Trophy Leaderboard 📢 @here**  
+  **📢 sniffr Trophy Leaderboard (After 1 Sprint) 📢 @here**  
+
+  Jon: 🏆  
+
+  ----------  
+
   Allie: 🥚  
 
   Benedict: 👻  
 
   Dan: ❓  
-
-  Jon: 😭  
 
   Josh: 🤞
 
