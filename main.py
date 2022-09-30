@@ -209,7 +209,7 @@ async def green_square_bot(message):
     ## If message contains a front end or back end url then track and respond
     # Does the message contain a front end or backend url?
     # Front end
-    if 'github.com/the-best-team-seven/' in message_content:
+    if 'github.com/nerd-out/' in message_content:
       # Extract pull id
       global frontend_pull_id, mech_arm_emoji, exclamations, backend_pull_id
       doc = nlp(message_content)
